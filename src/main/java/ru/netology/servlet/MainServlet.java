@@ -37,16 +37,6 @@ public class MainServlet extends HttpServlet {
         controller.save(request.getReader(), response);
     }
 
-    private String formatParams(HttpServletRequest request) {
-        return request.getParameterMap()
-                .entrySet()
-                .stream()
-                .map(stringEntry -> {
-                    final String param = String.join(" and ", stringEntry.getValue());
-                    return stringEntry.getKey() + " => " + param;
-                }).collect(Collectors.joining("\n"));
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getRequestURI();
