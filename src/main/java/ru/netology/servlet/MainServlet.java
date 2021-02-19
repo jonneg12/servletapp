@@ -1,5 +1,6 @@
 package ru.netology.servlet;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.netology.controller.PostController;
 import ru.netology.repository.PostRepository;
 import ru.netology.service.PostService;
@@ -11,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/posts", "/posts/*"})
 public class MainServlet extends HttpServlet {
@@ -21,10 +21,19 @@ public class MainServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        PostRepository repository = new PostRepository();
-        PostService service = new PostService(repository);
-        controller = new PostController(service);
-        log("Method init :)");
+
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext("ru.netology");
+
+        PostRepository repository = context.getBean(PostRepository.class);
+        PostService service = context.getBean(PostService.class);
+        controller = context.getBean(PostController.class);
+
+
+//without spring
+//        PostRepository repository = new PostRepository();
+//        PostService service = new PostService(repository);
+//        controller = new PostController(service);
+//        log("Method init started :)");
     }
 
     @Override
